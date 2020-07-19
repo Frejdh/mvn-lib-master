@@ -31,6 +31,14 @@
         <github.repository.name>mvn-lib-master</github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
     </properties>
 
+    <dependencies>
+        <dependency> <!-- Useful stuff like ArrayUtils -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <!-- enable JGit plugin -->

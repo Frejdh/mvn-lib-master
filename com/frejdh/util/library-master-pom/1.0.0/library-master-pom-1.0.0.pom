@@ -11,7 +11,7 @@
 
     <properties>
         <!-- Java configurations -->
-        <java.version>1.8</java.version> <!-- Fetched during runtime -->
+        <java.version>8</java.version> <!-- Fetched during runtime -->
         <java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
 
         <!-- Maven configurations -->
@@ -27,8 +27,8 @@
         <internal.deploy.repository>internal.repo</internal.deploy.repository>
         <github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
         <github.deploy.branch>mvn-repo</github.deploy.branch>
-        <github.repository.owner>Frejdh</github.repository.owner> <!-- Should be empty by default, only change when pushing artifacts -->
-        <github.repository.name>mvn-lib-master</github.repository.name> <!-- Should be empty by default, only change when pushing artifacts -->
+        <github.repository.owner>Frejdh</github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
+        <github.repository.name>mvn-lib-master</github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
     </properties>
 
     <build>

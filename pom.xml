@@ -11,7 +11,7 @@
 
     <properties>
         <!-- Java configurations -->
-        <java.version>1.8</java.version> <!-- Fetched during runtime -->
+        <java.version>8</java.version> <!-- Fetched during runtime -->
         <java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
 
         <!-- Maven configurations -->

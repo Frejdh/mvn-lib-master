@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.frejdh.util</groupId>
+    <artifactId>library-master-pom</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>8</java.version> <!-- Fetched during runtime -->
+        <java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
+
+        <maven.compiler.source>${java.project.version}</maven.compiler.source>
+        <maven.compiler.target>${java.project.version}</maven.compiler.target>
+        <generatedSources>${project.build.directory}/generated-sources</generatedSources>
+
+        <proguard.github.version>2.2.0</proguard.github.version>
+        <proguard.base.version>6.2.2</proguard.base.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <release>${java.version}</release>
+                        <!-- Need to disable default annotation processing since apt-maven-plugin takes over -->
+                        <compilerArgs>
+                            <arg>-proc:none</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.mysema.maven</groupId>
+                    <artifactId>apt-maven-plugin</artifactId>
+                    <version>1.1.3</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>process</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${generatedSources}</outputDirectory>
+                                <processors>
+                                    <processor>com.frejdh.util.common.annotations.WarningProcessor</processor>
+                                </processors>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.frejdh.util.common</groupId>
+                            <artifactId>common-annotations</artifactId>
+                            <version>1.0.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <!-- Need to ensure the generated source folder is added to the project classpath, in jdt.ls -->
+                            <id>add-source</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>add-source</goal>
+                            </goals>
+                            <configuration>
+                                <sources>
+                                    <source>${generatedSources}</source>
+                                </sources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+</project>

@@ -13,10 +13,12 @@ Add this to your `pom.xml` file:
     <packaging>pom</packaging>
 </dependency>
 
-<repository>
-    <id>library-master-pom</id>
-    <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/master/</url>
-</repository>
+<repositories>
+    <repository>
+        <id>library-master-pom</id>
+        <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/master/</url>
+    </repository>
+</repositories>
 ```
 
 ## Releases

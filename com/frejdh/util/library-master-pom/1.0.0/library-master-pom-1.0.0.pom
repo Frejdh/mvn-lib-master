@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.frejdh.util</groupId>
+    <artifactId>library-master-pom</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Java configurations -->
+        <java.version>1.8</java.version> <!-- Fetched during runtime -->
+        <java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
+
+        <!-- Maven configurations -->
+        <maven.compiler.source>${java.project.version}</maven.compiler.source>
+        <maven.compiler.target>${java.project.version}</maven.compiler.target>
+        <generatedSources>${project.build.directory}/generated-sources</generatedSources>
+
+        <!-- Obfuscation, mainly to make stuff smaller -->
+        <proguard.github.version>2.2.0</proguard.github.version>
+        <proguard.base.version>6.2.2</proguard.base.version>
+
+        <!-- Artifact deployment -->
+        <internal.deploy.repository>internal.repo</internal.deploy.repository>
+        <github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
+        <github.deploy.branch>mvn-repo</github.deploy.branch>
+        <github.repository.owner>Frejdh</github.repository.owner>
+        <github.repository.name>mvn-lib-master</github.repository.name>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <release>${java.version}</release>
+                    <!-- Need to disable default annotation processing since apt-maven-plugin takes over -->
+                    <compilerArgs>
+                        <arg>-proc:none</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <!-- Need to ensure the generated source folder is added to the project classpath, in jdt.ls -->
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generatedSources}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin> <!-- Used by Githubs site-maven-plugin. Overrides the older version that it uses -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
+            </plugin>
+
+            <plugin> <!-- Push artifact to github -->
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+                <configuration>
+                    <message>Maven artifact for ${project.version}</message> <!-- git commit message -->
+                    <noJekyll>true</noJekyll>  <!-- disable webpage processing -->
+                    <outputDirectory>${project.build.directory}/${github.deploy.branch}
+                    </outputDirectory> <!-- matches distribution management repository url above -->
+                    <branch>refs/tags/${project.version}</branch> <!-- remote branch name -->
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- organization or username  -->
+                    <repositoryName>${github.repository.name}</repositoryName> <!-- github repo name -->
+                </configuration>
+                <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>${internal.deploy.repository}</id>
+            <name>Temporary Maven Staging Repository</name>
+            <url>file://${project.build.directory}/${github.deploy.branch}</url>
+        </repository>
+    </distributionManagement>
+
+</project>

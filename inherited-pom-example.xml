@@ -19,6 +19,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
 
+        <master.pom.version>${parent.version}</master.pom.version> <!-- https://github.com/Frejdh/mvn-lib-master/releases -->
+
         <!-- Deployment for artifacts. MUST be set! -->
         <github.repository.owner>github-owner-of-repository</github.repository.owner>
         <github.repository.name>example-repository-name</github.repository.name>
@@ -27,7 +29,7 @@
     <repositories>
         <repository>
             <id>library-master-pom</id>
-            <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/master/</url>
+            <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/${master.pom.version}/</url>
         </repository>
     </repositories>
 

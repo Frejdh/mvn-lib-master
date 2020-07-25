@@ -8,10 +8,18 @@ Go here https://github.com/Frejdh/mvn-lib-master/releases
 Either use this [pom.xml](https://github.com/Frejdh/mvn-lib-master/blob/master/inherited-pom-example.xml) file as a base, 
 or add these lines to your `pom.xml` file:
 ```
+<properties> 
+    <frejdh.common.toolbox.version>1.0.0</frejdh.common.toolbox.version> <!-- https://github.com/Frejdh/mvn-lib-common-toolbox/releases -->
+    <!-- Optional, but required for artifact deployment -->
+    <github.repository.owner>github-owner-of-repository</github.repository.owner>
+    <github.repository.name>example-repository-name</github.repository.name>
+<properties>
+
 <dependencies> <!-- Required in order to use this library -->
     <dependency>
         <groupId>com.frejdh.util</groupId>
         <artifactId>library-master-pom</artifactId>
+        <version>${frejdh.common.toolbox.version}</version>
         <packaging>pom</packaging>
     </dependency>
 </dependencies>
@@ -19,14 +27,9 @@ or add these lines to your `pom.xml` file:
 <repositories> <!-- Required in order to resolve this library -->
     <repository>
         <id>library-master-pom</id>
-        <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/master/</url>
+        <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/${frejdh.common.toolbox.version}/</url>
     </repository>
 </repositories>
-
-<properties> <!-- Optional, but required for artifact deployment -->
-    <github.repository.owner>github-owner-of-repository</github.repository.owner>
-    <github.repository.name>example-repository-name</github.repository.name>
-<properties>
 ```
 
 ## Deploying artifacts (dev only)

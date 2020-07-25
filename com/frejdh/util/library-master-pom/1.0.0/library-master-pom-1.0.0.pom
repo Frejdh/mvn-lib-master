@@ -93,10 +93,6 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <release>${java.version}</release>
-                    <!-- Need to disable default annotation processing since apt-maven-plugin takes over -->
-                    <compilerArgs>
-                        <arg>-proc:none</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
 

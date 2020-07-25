@@ -25,6 +25,8 @@
 
         <!-- Artifact deployment -->
         <internal.deploy.repository>internal.repo</internal.deploy.repository>
+        <github.ref.release.jar>refs/tags</github.ref.release.jar>
+        <github.ref.release.branch>refs/heads</github.ref.release.branch>
         <github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
         <github.deploy.branch>mvn-repo</github.deploy.branch>
         <github.repository.owner>Frejdh</github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
@@ -125,28 +127,48 @@
                 <version>3.9.1</version>
             </plugin>
 
-            <plugin> <!-- Push artifact to github -->
+            <plugin> <!-- Push artifact and files to github -->
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
                 <version>0.11</version>
-                <configuration>
-                    <message>Maven artifact for ${project.version}</message> <!-- git commit message -->
-                    <noJekyll>true</noJekyll>  <!-- disable webpage processing -->
-                    <outputDirectory>${project.build.directory}/${github.deploy.branch}
-                    </outputDirectory> <!-- matches distribution management repository url above -->
-                    <branch>refs/tags/${project.version}</branch> <!-- remote branch name -->
-                    <includes>
-                        <include>**/*</include>
-                    </includes>
-                    <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- organization or username  -->
-                    <repositoryName>${github.repository.name}</repositoryName> <!-- github repo name -->
-                </configuration>
+
                 <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-                    <execution>
+                    <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
+                        <id>github-site-to-artifact</id>
                         <goals>
                             <goal>site</goal>
                         </goals>
                         <phase>deploy</phase>
+                        <configuration>
+                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                            <branch>${github.ref.release.jar}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                        </configuration>
+                    </execution>
+
+                    <execution> <!-- Upload files to a specific branch used as a maven repository -->
+                        <id>github-site-to-branch</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                            <branch>${github.ref.release.branch}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -176,7 +198,7 @@
     <repositories>
         <repository> <!-- Github repositories may be downloaded thanks to this -->
             <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <url>https://www.jitpack.io</url>
         </repository>
     </repositories>
 

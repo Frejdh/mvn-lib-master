@@ -8,33 +8,83 @@ Go here https://github.com/Frejdh/mvn-lib-master/releases
 Either use this [pom.xml](https://github.com/Frejdh/mvn-lib-master/blob/master/inherited-pom-example.xml) file as a base, 
 or add these lines to your `pom.xml` file:
 ```
-<properties> 
-    <frejdh.common.toolbox.version>1.0.0</frejdh.common.toolbox.version> <!-- https://github.com/Frejdh/mvn-lib-common-toolbox/releases -->
-    <!-- Optional, but required for artifact deployment -->
-    <github.repository.owner>github-owner-of-repository</github.repository.owner>
-    <github.repository.name>example-repository-name</github.repository.name>
-<properties>
+<parent>
+    <groupId>com.frejdh.util</groupId>
+    <artifactId>library-master-pom</artifactId>
+    <version>1.0.0</version>
+</parent>
 
-<dependencies> <!-- Required in order to use this library -->
-    <dependency>
-        <groupId>com.frejdh.util</groupId>
-        <artifactId>library-master-pom</artifactId>
-        <version>${frejdh.common.toolbox.version}</version>
-        <packaging>pom</packaging>
-    </dependency>
-</dependencies>
-
-<repositories> <!-- Required in order to resolve this library -->
+<repositories> <!-- Required in order to resolve this package -->
     <repository>
         <id>library-master-pom</id>
-        <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/${frejdh.common.toolbox.version}/</url>
+        <url>https://raw.github.com/Frejdh/mvn-lib-master/mvn-repo/</url>
     </repository>
 </repositories>
 ```
 
-## Deploying artifacts (dev only)
+### Deployment to github
+A part of the parent pom is pre-defined properties that enables easy releases to your github repository. 
+An artifact (non-fat version) and a branch can be automatically created upon `mvn clean deploy`. However, in order to set this up, some 
+properties needs to be set along with a plugin, please add the following to your child pom:
+```
+<properties> 
+    <github.repository.owner>github-owner-of-repository</github.repository.owner>
+    <github.repository.name>example-repository-name</github.repository.name>
+<properties>
+```
+Also add the following plugin (no adjustments required):
+```
+<plugin> <!-- Optional. Push artifact and files to github upon mvn deploy -->
+    <inherited>false</inherited>
+    <groupId>com.github.github</groupId>
+    <artifactId>site-maven-plugin</artifactId>
+    <version>0.11</version>
+
+    <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+        <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
+            <id>github-site-to-artifact</id>
+            <goals>
+                <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+            <configuration>
+                <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                <branch>${github.ref.release.jar}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+            </configuration>
+        </execution>
+
+        <execution> <!-- Upload files to a specific branch used as a maven repository -->
+            <id>github-site-to-branch</id>
+            <goals>
+                <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+            <configuration>
+                <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                <branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
 Simply type `mvn clean deploy` in order to deploy to the repository's `mvn-repo` branch. <br>
-<strong>Note:</strong> In order to deploy anything, a couple of requisites needs to be fullfilled.
+
+#### Github authorization for deployment
+In order to deploy anything, a couple of requisites needs to be fullfilled (once per computer).
 1. You need to have write access to the repository (<i>obviously</i>).
 2. [A personal access token](https://github.com/settings/tokens) with both repository and user permissions (optional but highly recommended).
 3. A name set on your [Github profile](https://github.com/settings/profile) (an error will occur otherwise).

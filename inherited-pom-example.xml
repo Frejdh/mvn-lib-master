@@ -19,17 +19,66 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
 
-        <master.pom.version>${parent.version}</master.pom.version> <!-- https://github.com/Frejdh/mvn-lib-master/releases -->
-
-        <!-- Deployment for artifacts. MUST be set! -->
+        <!-- Deployment for artifacts. MUST be set if the deployment plugin is used! -->
         <github.repository.owner>github-owner-of-repository</github.repository.owner>
         <github.repository.name>example-repository-name</github.repository.name>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin> <!-- Optional. Push artifact and files to github upon mvn deploy -->
+                <inherited>false</inherited>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+
+                <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
+                        <id>github-site-to-artifact</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                            <branch>${github.ref.release.jar}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                        </configuration>
+                    </execution>
+
+                    <execution> <!-- Upload files to a specific branch used as a maven repository -->
+                        <id>github-site-to-branch</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                            <branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <repositories>
         <repository>
             <id>library-master-pom</id>
-            <url>https://raw.githubusercontent.com/Frejdh/mvn-lib-master/${master.pom.version}/</url>
+            <url>https://raw.github.com/Frejdh/mvn-lib-master/mvn-repo/</url>
         </repository>
     </repositories>
 

@@ -131,6 +131,7 @@
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
                 <version>0.11</version>
+                <inherited>false</inherited>
 
                 <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
                     <execution> <!-- Package and push .jar file as a release, available for direct download on github -->

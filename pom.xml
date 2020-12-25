@@ -31,6 +31,7 @@
         <github.deploy.branch>mvn-repo</github.deploy.branch>
         <github.repository.owner></github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
         <github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
+        <github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
     </properties>
 
     <dependencies>

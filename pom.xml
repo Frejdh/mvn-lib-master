@@ -93,7 +93,6 @@
                     <encoding>UTF-8</encoding>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <release>${java.version}</release>
                 </configuration>
             </plugin>
 

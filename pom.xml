@@ -6,13 +6,14 @@
 
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
 
     <properties>
-        <!-- Java configurations -->
+        <!-- Java/Kotlin configurations -->
         <java.version>8</java.version> <!-- Fetched during runtime -->
         <java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
+        <kotlin.version>1.4.32</kotlin.version>
 
         <!-- Maven configurations -->
         <maven.compiler.source>${java.project.version}</maven.compiler.source>
@@ -32,6 +33,9 @@
         <github.repository.owner></github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
         <github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
         <github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
+
+        <lombok.version>1.18.20</lombok.version>
+        <jetbrains.annotations.version>20.1.0</jetbrains.annotations.version>  
     </properties>
 
     <dependencies>

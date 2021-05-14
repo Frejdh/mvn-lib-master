@@ -6,7 +6,7 @@
 
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -29,7 +29,7 @@
         <github.ref.release.jar>refs/tags</github.ref.release.jar>
         <github.ref.release.branch>refs/heads</github.ref.release.branch>
         <github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
-        <github.deploy.branch>mvn-repo</github.deploy.branch>
+        <github.deploy.branch>releases</github.deploy.branch>
         <github.repository.owner></github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
         <github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
         <github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>

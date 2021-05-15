@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.frejdh.util</groupId>
+    <artifactId>library-master-pom</artifactId>
+    <version>1.0.2</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Java/Kotlin configurations -->
+        <java.version>8</java.version> <!-- Fetched during runtime -->
+        <java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
+        <kotlin.version>1.4.32</kotlin.version>
+
+        <!-- Maven configurations -->
+        <maven.compiler.source>${java.project.version}</maven.compiler.source>
+        <maven.compiler.target>${java.project.version}</maven.compiler.target>
+        <generatedSources>${project.build.directory}/generated-sources</generatedSources>
+
+        <!-- Obfuscation, mainly to make stuff smaller -->
+        <proguard.github.version>2.2.0</proguard.github.version>
+        <proguard.base.version>6.2.2</proguard.base.version>
+
+        <!-- Artifact deployment -->
+        <internal.deploy.repository>internal.repo</internal.deploy.repository>
+        <github.ref.release.jar>refs/tags</github.ref.release.jar>
+        <github.ref.release.branch>refs/heads</github.ref.release.branch>
+        <github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
+        <github.deploy.branch>releases</github.deploy.branch>
+        <github.repository.owner></github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
+        <github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
+        <github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
+
+        <lombok.version>1.18.20</lombok.version>
+        <jetbrains.annotations.version>20.1.0</jetbrains.annotations.version>  
+    </properties>
+
+    <dependencies>
+        <dependency> <!-- Useful stuff like ArrayUtils -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- enable JGit plugin -->
+            <plugin>
+                <groupId>ru.concerteza.buildnumber</groupId>
+                <artifactId>maven-jgit-buildnumber-plugin</artifactId>
+                <version>1.2.9</version>
+                <executions>
+                    <execution>
+                        <id>git-buildnumber</id>
+                        <goals>
+                            <goal>extract-buildnumber</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generates file with git information -->
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>4.0.0</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <excludeProperties>
+                        <excludeProperty>git.user.*</excludeProperty>
+                    </excludeProperties>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <!-- Need to ensure the generated source folder is added to the project classpath, in jdt.ls -->
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generatedSources}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin> <!-- Used by Githubs site-maven-plugin. Overrides the older version that it uses -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
+            </plugin>
+
+            <plugin> <!-- Push artifact and files to github -->
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+                <inherited>false</inherited>
+
+                <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
+                        <id>github-site-to-artifact</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                            <branch>${github.ref.release.jar}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                        </configuration>
+                    </execution>
+
+                    <execution> <!-- Upload files to a specific branch used as a maven repository -->
+                        <id>github-site-to-branch</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                            <branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.json</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>${internal.deploy.repository}</id>
+            <name>Temporary Maven Staging Repository</name>
+            <url>file://${project.build.directory}/${github.deploy.branch}</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository> <!-- Github repositories may be downloaded thanks to this -->
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
+        </repository>
+    </repositories>
+
+</project>

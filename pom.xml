@@ -6,7 +6,7 @@
 
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -35,7 +35,7 @@
         <github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 
         <lombok.version>1.18.20</lombok.version>
-        <jetbrains.annotations.version>20.1.0</jetbrains.annotations.version>  
+        <jetbrains.annotations.version>20.1.0</jetbrains.annotations.version>
     </properties>
 
     <dependencies>
@@ -200,6 +200,44 @@
         <repository> <!-- Github repositories may be downloaded thanks to this -->
             <id>jitpack.io</id>
             <url>https://www.jitpack.io</url>
+        </repository>
+
+        <!-- My repositories -->
+        <repository>
+            <id>mvn-lib-common-ansi-logger</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-ansi-logger/releases/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-job-queuing</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-job-queuing/releases/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-network-toolbox</id>
+            <url>https://raw.github.com/Frejdh/network-toolbox/releases/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-common-toolbox</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-common-toolbox/releases/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-configurator</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-configurator/releases/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-file-watcher</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-file-watcher/mvn-repo/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-thread-executor</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-thread-executor/mvn-repo/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-annotations</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-annotations/mvn-repo/</url>
+        </repository>
+        <repository>
+            <id>mvn-lib-http-pool</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-http-pool/mvn-repo/</url>
         </repository>
     </repositories>
 

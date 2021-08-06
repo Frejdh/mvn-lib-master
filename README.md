@@ -11,13 +11,13 @@ or add these lines to your `pom.xml` file:
 <parent>
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
 </parent>
 
 <repositories> <!-- Required in order to resolve this package -->
     <repository>
         <id>library-master-pom</id>
-        <url>https://raw.github.com/Frejdh/mvn-lib-master/mvn-repo/</url>
+        <url>https://raw.github.com/Frejdh/mvn-lib-master/releases/</url>
     </repository>
 </repositories>
 ```

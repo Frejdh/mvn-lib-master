@@ -6,7 +6,7 @@
 
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -42,28 +42,71 @@
         <dependency> <!-- Useful stuff like ArrayUtils -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.10</version>
+            <version>3.12.0</version>
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+
+            <!--
+                Latest stable releases are shown here
+            -->
+
+            <dependency>
+                <groupId>com.frejdh.util</groupId>
+                <artifactId>job-queuing</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.frejdh.util.common</groupId>
+                <artifactId>common-toolbox</artifactId>
+                <version>1.0.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.frejdh.util.environment</groupId>
+                <artifactId>configurator</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.frejdh.util</groupId>
+                <artifactId>file-watcher</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.frejdh.util.common</groupId>
+                <artifactId>ansi-logger</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.frejdh.util.concurrency</groupId>
+                <artifactId>thread-executor</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.frejdh.util.networking</groupId>
+                <artifactId>network-toolbox</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+
+<!--            To be added when release is done -->
+<!--            <dependency>-->
+<!--                <groupId>com.frejdh.util.common</groupId>-->
+<!--                <artifactId>annotations</artifactId>-->
+<!--                <version>1.0.0-SNAPSHOT</version>-->
+<!--            </dependency>-->
+
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
-            <!-- enable JGit plugin -->
-            <plugin>
-                <groupId>ru.concerteza.buildnumber</groupId>
-                <artifactId>maven-jgit-buildnumber-plugin</artifactId>
-                <version>1.2.9</version>
-                <executions>
-                    <execution>
-                        <id>git-buildnumber</id>
-                        <goals>
-                            <goal>extract-buildnumber</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Generates file with git information -->
             <plugin>
                 <groupId>pl.project13.maven</groupId>
@@ -87,7 +130,6 @@
                     <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -121,59 +163,64 @@
                 </executions>
             </plugin>
 
-            <plugin> <!-- Used by Githubs site-maven-plugin. Overrides the older version that it uses -->
+            <plugin> <!-- Used by Github's site-maven-plugin. Overrides the older version that it uses -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.9.1</version>
             </plugin>
-
-            <plugin> <!-- Push artifact and files to github -->
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.11</version>
-                <inherited>false</inherited>
-
-                <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-                    <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
-                        <id>github-site-to-artifact</id>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <phase>deploy</phase>
-                        <configuration>
-                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
-                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
-                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
-                            <branch>${github.ref.release.jar}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
-                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
-                        </configuration>
-                    </execution>
-
-                    <execution> <!-- Upload files to a specific branch used as a maven repository -->
-                        <id>github-site-to-branch</id>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <phase>deploy</phase>
-                        <configuration>
-                            <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
-                            <noJekyll>true</noJekyll><!-- Disable webpage processing -->
-                            <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
-                            <branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                            <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
-                            <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
+
+
+        <pluginManagement>
+            <plugins>
+                <plugin> <!-- Push artifact and files to github. Optional usage -->
+                    <groupId>com.github.github</groupId>
+                    <artifactId>site-maven-plugin</artifactId>
+                    <version>0.11</version>
+                    <inherited>false</inherited>
+
+                    <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                        <execution> <!-- Package and push .jar file as a release, available for direct download on github -->
+                            <id>github-site-to-artifact</id>
+                            <goals>
+                                <goal>site</goal>
+                            </goals>
+                            <phase>deploy</phase>
+                            <configuration>
+                                <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                                <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                                <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                                <branch>${github.ref.release.jar}/${project.version}</branch> <!-- Remote branch name (maven repository) -->
+                                <includes>
+                                    <include>**/*</include>
+                                </includes>
+                                <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                                <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                            </configuration>
+                        </execution>
+
+                        <execution> <!-- Upload files to a specific branch used as a maven repository -->
+                            <id>github-site-to-branch</id>
+                            <goals>
+                                <goal>site</goal>
+                            </goals>
+                            <phase>deploy</phase>
+                            <configuration>
+                                <message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+                                <noJekyll>true</noJekyll><!-- Disable webpage processing -->
+                                <outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+                                <branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
+                                <includes>
+                                    <include>**/*</include>
+                                </includes>
+                                <repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+                                <repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
         <resources>
             <resource>

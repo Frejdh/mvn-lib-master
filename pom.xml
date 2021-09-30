@@ -196,4 +196,11 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>mvn-lib-dependency-versions</id>
+            <url>https://raw.github.com/Frejdh/mvn-lib-dependency-versions/releases/</url>
+        </repository>
+    </repositories>
+         
 </project>

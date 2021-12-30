@@ -6,7 +6,7 @@
 
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -34,8 +34,8 @@
         <github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
         <github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 
-        <lombok.version>1.18.20</lombok.version>
-        <jetbrains.annotations.version>20.1.0</jetbrains.annotations.version>
+        <lombok.version>1.18.22</lombok.version>
+        <jetbrains.annotations.version>22.0.0</jetbrains.annotations.version>
     </properties>
 
     <dependencies>

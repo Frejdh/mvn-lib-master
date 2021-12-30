@@ -11,7 +11,7 @@ or add these lines to your `pom.xml` file:
 <parent>
     <groupId>com.frejdh.util</groupId>
     <artifactId>library-master-pom</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.1</version>
 </parent>
 
 <repositories> <!-- Required in order to resolve this package -->

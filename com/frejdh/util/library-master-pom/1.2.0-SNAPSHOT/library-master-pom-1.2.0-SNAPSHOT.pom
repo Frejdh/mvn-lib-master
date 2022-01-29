@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.frejdh.util</groupId>
+	<artifactId>library-master-pom</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<!-- Java/Kotlin configurations -->
+		<java.version>8</java.version> <!-- Fetched during runtime -->
+		<java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
+		<kotlin.version>1.4.32</kotlin.version>
+
+		<!-- Maven configurations -->
+		<maven.compiler.source>${java.project.version}</maven.compiler.source>
+		<maven.compiler.target>${java.project.version}</maven.compiler.target>
+		<generatedSources>${project.build.directory}/generated-sources</generatedSources>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Artifact deployment -->
+		<internal.deploy.repository>internal.repo</internal.deploy.repository>
+		<github.ref.release.jar>refs/tags</github.ref.release.jar>
+		<github.ref.release.branch>refs/heads</github.ref.release.branch>
+		<github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
+		<github.deploy.branch>releases</github.deploy.branch>
+		<github.repository.owner></github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
+		<github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
+		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
+
+		<!-- Dependency versions -->
+		<vertx.version>4.2.4</vertx.version>
+		<spring-boot.version>2.6.3</spring-boot.version>
+
+		<frejdh.ansi-logger.version>1.1.0</frejdh.ansi-logger.version>
+		<frejdh.common-toolbox.version>1.0.8</frejdh.common-toolbox.version>
+		<frejdh.configurator.version>1.1.0</frejdh.configurator.version> <!-- Update to new once available, to make env variables work better! -->
+		<frejdh.network-toolbox.version>1.0.1</frejdh.network-toolbox.version>
+		<frejdh.job-queue.version>1.2.2</frejdh.job-queue.version>
+
+		<junit-jupiter.version>5.8.2</junit-jupiter.version>
+		<junit-platforms.version>1.8.2</junit-platforms.version>
+		<mockito.version>4.3.1</mockito.version>
+		<junit-engine.version>5.8.2</junit-engine.version>
+
+		<apache.commons-lang.version>3.12.0</apache.commons-lang.version>
+		<apache.commons-io.version>2.11.0</apache.commons-io.version>
+		<apache.commons-codec.version>1.15</apache.commons-codec.version>
+		<jackson.version>2.13.1</jackson.version>
+		<graalvm.script-engine.version>22.0.0.2</graalvm.script-engine.version>
+
+		<h2.version>2.1.210</h2.version>
+		<mysql.driver.version>8.0.28</mysql.driver.version>
+		<postgresql.driver.version>42.3.1</postgresql.driver.version>
+		<oracle.driver.version>19.13.0.0.1</oracle.driver.version>
+
+		<hibernate.version>7.0.2.Final</hibernate.version>
+		<javax-el.version>3.0.0</javax-el.version>
+		<javax-annotations.version>1.3.2</javax-annotations.version>
+		<jetbrains.annotations.version>22.0.0</jetbrains.annotations.version>
+
+		<lombok.version>1.18.22</lombok.version>
+		<jgit.version>6.0.0.202111291000-r</jgit.version>
+		<log4j.version>2.17.1</log4j.version>
+		<reflections.version>0.10.2</reflections.version>
+		<nv-i18n.version>1.29</nv-i18n.version>
+
+		<!-- Plugin versions -->
+		<plugin.pojo.version>1.1.1</plugin.pojo.version>
+		<plugin.maven-compiler.version>3.9.0</plugin.maven-compiler.version>
+		<plugin.maven-shade.version>3.2.2</plugin.maven-shade.version>
+		<plugin.maven-jar.version>3.2.2</plugin.maven-jar.version>
+		<plugin.maven-site.version>3.10.0</plugin.maven-site.version>
+		<plugin.maven-surefire.version>2.22.2</plugin.maven-surefire.version>
+		<plugin.build-helper-maven-plugin.version>3.3.0</plugin.build-helper-maven-plugin.version>
+		<plugin.git-commit-id.version>5.0.0</plugin.git-commit-id.version>
+		<plugin.versions-maven-plugin.version>2.9.0</plugin.versions-maven-plugin.version>
+	</properties>
+
+	<dependencies>
+		<dependency> <!-- Useful stuff like ArrayUtils -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${apache.commons-lang.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.git-commit-id</groupId>
+			<artifactId>git-commit-id-maven-plugin</artifactId>
+			<version>${plugin.git-commit-id.version}</version>
+			<type>maven-plugin</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>versions-maven-plugin</artifactId>
+			<version>${plugin.versions-maven-plugin.version}</version>
+			<type>maven-plugin</type>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Vertx dependency manager -->
+			<dependency>
+				<groupId>io.vertx</groupId>
+				<artifactId>vertx-stack-depchain</artifactId>
+				<version>${vertx.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Spring-boot dependency manager -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- My own dependencies -->
+			<dependency>
+				<groupId>com.frejdh.util.common</groupId>
+				<artifactId>ansi-logger</artifactId>
+				<version>${frejdh.ansi-logger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.frejdh.util.common</groupId>
+				<artifactId>common-toolbox</artifactId>
+				<version>${frejdh.common-toolbox.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.frejdh.util.enviroment</groupId>
+				<artifactId>configurator</artifactId>
+				<version>${frejdh.configurator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.frejdh.util.networking</groupId>
+				<artifactId>network-toolbox</artifactId>
+				<version>${frejdh.network-toolbox.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.frejdh.util</groupId>
+				<artifactId>job-queuing</artifactId>
+				<version>${frejdh.job-queue.version}</version>
+			</dependency>
+
+			<!-- Junit Testing -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-commons</artifactId>
+				<version>${junit-platforms.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-launcher</artifactId>
+				<version>${junit-platforms.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-inline</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito2</artifactId>
+				<version>2.0.9</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- Apache -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${apache.commons-io.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${apache.commons-codec.version}</version>
+			</dependency>
+
+			<!-- Jackson (serialization) -->
+			<dependency> <!-- JSON serialization (core) -->
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency> <!-- JSON annotations -->
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency> <!-- JSON/XML data-binding -->
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency> <!-- XML parsing -->
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-xml</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency> <!-- YAML parsing -->
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-yaml</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<!-- Script engine -->
+			<dependency>
+				<groupId>org.graalvm.js</groupId>
+				<artifactId>js</artifactId>
+				<version>${graalvm.script-engine.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.graalvm.js</groupId>
+				<artifactId>js-scriptengine</artifactId>
+				<version>${graalvm.script-engine.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.driver.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.driver.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle.database.jdbc</groupId>
+				<artifactId>ojdbc10</artifactId>
+				<version>${oracle.driver.version}</version>
+			</dependency>
+
+			<!-- JGIT -->
+			<dependency>
+				<groupId>org.eclipse.jgit</groupId>
+				<artifactId>org.eclipse.jgit</artifactId>
+				<version>${jgit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jgit</groupId>
+				<artifactId>org.eclipse.jgit.junit</artifactId>
+				<version>${jgit.version}</version>
+			</dependency>
+
+			<!-- Validation -->
+			<dependency> <!-- Validation library -->
+				<groupId>org.hibernate.validator</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency> <!-- Required by hibernator (needs to be manually provided) -->
+				<groupId>javax.el</groupId>
+				<artifactId>javax.el-api</artifactId>
+				<version>${javax-el.version}</version>
+			</dependency>
+			<dependency> <!-- Required by hibernator (needs to be manually provided) -->
+				<groupId>org.glassfish</groupId>
+				<artifactId>javax.el</artifactId>
+				<version>${javax-el.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>javax.annotation-api</artifactId>
+				<version>${javax-annotations.version}</version>
+			</dependency>
+
+			<!-- To avoid Log4j2 vulnerability -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-to-slf4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+			<!-- Misc -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency> <!-- Countries and languages. https://github.com/TakahikoKawasaki/nv-i18n -->
+				<groupId>com.neovisionaries</groupId>
+				<artifactId>nv-i18n</artifactId>
+				<version>${nv-i18n.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>${reflections.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${plugin.maven-compiler.version}</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${plugin.build-helper-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<!-- Need to ensure the generated source folder is added to the project classpath, in jdt.ls -->
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${generatedSources}</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin> <!-- Used by Github's site-maven-plugin. Overrides the older version that it uses -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${plugin.maven-site.version}</version>
+			</plugin>
+		</plugins>
+
+
+		<pluginManagement>
+			<plugins>
+				<plugin> <!-- Push artifact and files to github. Optional usage -->
+					<groupId>com.github.github</groupId>
+					<artifactId>site-maven-plugin</artifactId>
+					<version>${github.site-maven-plugin.version}</version>
+					<inherited>false</inherited>
+
+					<executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+						<execution> <!-- Package and push .jar file as a release, available for direct download on github -->
+							<id>github-site-to-artifact</id>
+							<goals>
+								<goal>site</goal>
+							</goals>
+							<phase>deploy</phase>
+							<configuration>
+								<message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+								<noJekyll>true</noJekyll><!-- Disable webpage processing -->
+								<outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+								<branch>${github.ref.release.jar}/${project.version}
+								</branch> <!-- Remote branch name (maven repository) -->
+								<includes>
+									<include>**/*</include>
+								</includes>
+								<repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+								<repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+							</configuration>
+						</execution>
+
+						<execution> <!-- Upload files to a specific branch used as a maven repository -->
+							<id>github-site-to-branch</id>
+							<goals>
+								<goal>site</goal>
+							</goals>
+							<phase>deploy</phase>
+							<configuration>
+								<message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
+								<noJekyll>true</noJekyll><!-- Disable webpage processing -->
+								<outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
+								<branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
+								<includes>
+									<include>**/*</include>
+								</includes>
+								<repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
+								<repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build>
+
+	<profiles>
+		<profile>
+			<id>git-info</id>
+			<build>
+				<plugins>
+					<!-- Generates file with git information -->
+					<plugin>
+						<groupId>io.github.git-commit-id</groupId>
+						<artifactId>git-commit-id-maven-plugin</artifactId>
+						<version>${plugin.git-commit-id.version}</version>
+						<executions>
+							<execution>
+								<id>get-the-git-infos</id>
+								<goals>
+									<goal>revision</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<generateGitPropertiesFile>true</generateGitPropertiesFile>
+							<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+							<excludeProperties>
+								<excludeProperty>git.user.*</excludeProperty>
+							</excludeProperties>
+							<commitIdGenerationMode>full</commitIdGenerationMode>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile> <!-- Display available dependency updates based on the properties for them -->
+			<id>list-property-updates</id>
+			<build>
+				<plugins>
+					<!-- List available dependency updates (properties) -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>${plugin.versions-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>display-property-updates</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile> <!-- Display available dependency updates based on the dependencies/plugins themselves -->
+			<id>list-all-updates</id>
+			<build>
+				<plugins>
+					<!-- List available dependency updates (properties) -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>${plugin.versions-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>list-dependency-updates</id>
+								<goals>
+									<goal>display-dependency-updates</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+							<execution>
+								<id>list-plugin-updates</id>
+								<goals>
+									<goal>display-plugin-updates</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>${internal.deploy.repository}</id>
+			<name>Temporary Maven Staging Repository</name>
+			<url>file://${project.build.directory}/${github.deploy.branch}</url>
+		</repository>
+	</distributionManagement>
+
+</project>

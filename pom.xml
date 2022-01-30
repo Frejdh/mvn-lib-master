@@ -4,9 +4,9 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.frejdh.util</groupId>
-	<artifactId>library-master-pom</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<groupId>com.frejdh</groupId>
+	<artifactId>master-pom</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -37,10 +37,11 @@
 
 		<frejdh.ansi-logger.version>1.1.0</frejdh.ansi-logger.version>
 		<frejdh.common-toolbox.version>1.0.8</frejdh.common-toolbox.version>
-		<frejdh.configurator.version>1.1.0</frejdh.configurator.version> <!-- Update to new once available, to make env variables work better! -->
+		<frejdh.thread-executor.version>1.0.0</frejdh.thread-executor.version>
+		<frejdh.file-watcher.version>1.0.2</frejdh.file-watcher.version>
+		<frejdh.configurator.version>2.0.0</frejdh.configurator.version> <!-- Update to new once available, to make env variables work better! -->
 		<frejdh.network-toolbox.version>1.0.1</frejdh.network-toolbox.version>
 		<frejdh.job-queue.version>1.2.2</frejdh.job-queue.version>
-
 		<junit-jupiter.version>5.8.2</junit-jupiter.version>
 		<junit-platforms.version>1.8.2</junit-platforms.version>
 		<mockito.version>4.3.1</mockito.version>
@@ -49,7 +50,10 @@
 		<apache.commons-lang.version>3.12.0</apache.commons-lang.version>
 		<apache.commons-io.version>2.11.0</apache.commons-io.version>
 		<apache.commons-codec.version>1.15</apache.commons-codec.version>
+		<apache.http-client.version>4.5.13</apache.http-client.version>
 		<jackson.version>2.13.1</jackson.version>
+		<gson.version>2.8.9</gson.version>
+		<modelmapper.version>3.0.0</modelmapper.version>
 		<graalvm.script-engine.version>22.0.0.2</graalvm.script-engine.version>
 
 		<h2.version>2.1.210</h2.version>
@@ -67,6 +71,7 @@
 		<log4j.version>2.17.1</log4j.version>
 		<reflections.version>0.10.2</reflections.version>
 		<nv-i18n.version>1.29</nv-i18n.version>
+		<javac-warning-annotation.version>1.0.0</javac-warning-annotation.version>
 
 		<!-- Plugin versions -->
 		<plugin.pojo.version>1.1.1</plugin.pojo.version>
@@ -204,8 +209,13 @@
 				<artifactId>commons-codec</artifactId>
 				<version>${apache.commons-codec.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${apache.http-client.version}</version>
+			</dependency>
 
-			<!-- Jackson (serialization) -->
+			<!-- Serialization & Converters -->
 			<dependency> <!-- JSON serialization (core) -->
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
@@ -230,6 +240,16 @@
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-yaml</artifactId>
 				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.modelmapper</groupId>
+				<artifactId>modelmapper</artifactId>
+				<version>${modelmapper.version}</version>
 			</dependency>
 
 			<!-- Script engine -->
@@ -337,6 +357,13 @@
 				<artifactId>reflections</artifactId>
 				<version>${reflections.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.pushtorefresh</groupId>
+				<artifactId>javac-warning-annotation</artifactId>
+				<version>${javac-warning-annotation.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

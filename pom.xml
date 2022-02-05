@@ -7,7 +7,7 @@
 
 	<groupId>com.frejdh</groupId>
 	<artifactId>master-pom</artifactId>
-	<version>2.0.1</version>
+	<version>2.1.0</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -36,14 +36,8 @@
 		<!-- Dependency versions -->
 		<vertx.version>4.2.4</vertx.version>
 		<spring-boot.version>2.6.3</spring-boot.version>
+		<frejdh.dependencies.version>1.1.0-SNAPSHOT</frejdh.dependencies.version>
 
-		<frejdh.ansi-logger.version>1.1.0</frejdh.ansi-logger.version>
-		<frejdh.common-toolbox.version>1.0.8</frejdh.common-toolbox.version>
-		<frejdh.thread-executor.version>1.0.0</frejdh.thread-executor.version>
-		<frejdh.file-watcher.version>1.0.2</frejdh.file-watcher.version>
-		<frejdh.configurator.version>1.1.0</frejdh.configurator.version> <!-- Update to new once available, to make env variables work better! -->
-		<frejdh.network-toolbox.version>1.0.1</frejdh.network-toolbox.version>
-		<frejdh.job-queue.version>1.2.2</frejdh.job-queue.version>
 		<junit-base.version>5.8.2</junit-base.version>
 		<junit-platforms.version>1.8.2</junit-platforms.version>
 		<mockito.version>4.3.1</mockito.version>
@@ -132,39 +126,11 @@
 
 			<!-- My own dependencies -->
 			<dependency>
-				<groupId>com.frejdh.util.common</groupId>
-				<artifactId>ansi-logger</artifactId>
-				<version>${frejdh.ansi-logger.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.frejdh.util.common</groupId>
-				<artifactId>common-toolbox</artifactId>
-				<version>${frejdh.common-toolbox.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.frejdh.util.concurrency</groupId>
-				<artifactId>thread-executor</artifactId>
-				<version>${frejdh.thread-executor.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.frejdh.util</groupId>
-				<artifactId>file-watcher</artifactId>
-				<version>${frejdh.file-watcher.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.frejdh.util.enviroment</groupId>
-				<artifactId>configurator</artifactId>
-				<version>${frejdh.configurator.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.frejdh.util.networking</groupId>
-				<artifactId>network-toolbox</artifactId>
-				<version>${frejdh.network-toolbox.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.frejdh.util</groupId>
-				<artifactId>job-queuing</artifactId>
-				<version>${frejdh.job-queue.version}</version>
+				<groupId>com.frejdh</groupId>
+				<artifactId>dependency-versions</artifactId>
+				<version>${frejdh.dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<!-- Junit Testing -->
@@ -599,5 +565,13 @@
 			<url>file://${project.build.directory}/${github.deploy.branch}</url>
 		</repository>
 	</distributionManagement>
+
+
+	<repositories>
+		<repository>
+			<id>mvn-lib-dependency-versions</id>
+			<url>https://raw.github.com/Frejdh/mvn-lib-dependency-versions/releases/</url>
+		</repository>
+	</repositories>
 
 </project>

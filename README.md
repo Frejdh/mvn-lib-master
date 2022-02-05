@@ -9,9 +9,9 @@ Either use this [pom.xml](https://github.com/Frejdh/mvn-lib-master/blob/master/i
 or add these lines to your `pom.xml` file:
 ```
 <parent>
-    <groupId>com.frejdh.util</groupId>
-    <artifactId>library-master-pom</artifactId>
-    <version>1.1.1</version>
+    <groupId>com.frejdh</groupId>
+    <artifactId>master-pom</artifactId>
+    <version>2.0.0</version>
 </parent>
 
 <repositories> <!-- Required in order to resolve this package -->

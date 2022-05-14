@@ -7,7 +7,7 @@
 
 	<groupId>com.frejdh</groupId>
 	<artifactId>master-pom</artifactId>
-	<version>2.1.1</version>
+	<version>2.1.2</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -36,7 +36,7 @@
 		<!-- Dependency versions -->
 		<vertx.version>4.2.4</vertx.version>
 		<spring-boot.version>2.6.3</spring-boot.version>
-		<frejdh.dependencies.version>1.1.0-SNAPSHOT</frejdh.dependencies.version>
+		<frejdh.dependencies.version>1.1.1</frejdh.dependencies.version>
 
 		<junit-base.version>5.8.2</junit-base.version>
 		<junit-platforms.version>1.8.2</junit-platforms.version>

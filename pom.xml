@@ -54,7 +54,7 @@
 
 		<h2.version>2.1.210</h2.version>
 		<mysql.driver.version>8.0.28</mysql.driver.version>
-		<postgresql.driver.version>42.3.3</postgresql.driver.version>
+		<postgresql.driver.version>42.4.1</postgresql.driver.version>
 		<oracle.driver.version>19.13.0.0.1</oracle.driver.version>
 
 		<hibernate.version>7.0.2.Final</hibernate.version>

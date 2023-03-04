@@ -96,3 +96,12 @@ In order to deploy anything, a couple of requisites needs to be fullfilled (once
     <password>[REPLACE. Your personal access token or plain text password]</password>
 </server>
 ```
+
+## Update dependencies
+There are some plugins that can be used in order to detect dependency updates.
+
+### Based on properties
+`mvn initialize -P list-property-updates`
+
+### Based on the dependencies/plugins found
+`mvn initialize -P list-all-updates`

@@ -7,13 +7,13 @@
 
 	<groupId>com.frejdh</groupId>
 	<artifactId>master-pom</artifactId>
-	<version>2.2.0</version>
+	<version>2.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
 		<!-- Java/Kotlin configurations -->
-		<java.version>8</java.version> <!-- Fetched during runtime -->
-		<java.project.version>1.8</java.project.version> <!-- Use to manually configure java version for compiling -->
+		<java.version>17</java.version> <!-- Fetched during runtime -->
+		<java.project.version>17</java.project.version> <!-- Use to manually configure java version for compiling -->
 		<kotlin.version>1.5.10</kotlin.version>
 		<jvm.options></jvm.options>
 
@@ -22,6 +22,9 @@
 		<maven.compiler.target>${java.project.version}</maven.compiler.target>
 		<generatedSources>${project.build.directory}/generated-sources</generatedSources>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Lombok configurations for javadoc -->
+		<delombok.output-directory>target/delombok</delombok.output-directory>
 
 		<!-- Artifact deployment -->
 		<internal.deploy.repository>internal.repo</internal.deploy.repository>
@@ -34,53 +37,55 @@
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 
 		<!-- Dependency versions -->
-		<vertx.version>4.4.0</vertx.version>
-		<spring-boot.version>3.0.4</spring-boot.version>
+		<vertx.version>4.4.4</vertx.version>
+		<spring-boot.version>3.1.2</spring-boot.version>
 		<frejdh.dependencies.version>1.2.1</frejdh.dependencies.version>
 
 		<junit-base.version>5.9.2</junit-base.version>
 		<junit-platforms.version>1.9.2</junit-platforms.version>
-		<mockito.version>5.1.1</mockito.version>
+		<mockito.version>5.2.0</mockito.version>
 		<junit-engine.version>${junit-base.version}</junit-engine.version>
 
 		<apache.commons-lang.version>3.12.0</apache.commons-lang.version>
-		<apache.commons-io.version>2.11.0</apache.commons-io.version>
-		<apache.commons-codec.version>1.15</apache.commons-codec.version>
+		<apache.commons-io.version>2.13.0</apache.commons-io.version>
+		<apache.commons-codec.version>1.16.0</apache.commons-codec.version>
 		<apache.commons-validator.version>1.7</apache.commons-validator.version>
 		<apache.http-client.version>4.5.14</apache.http-client.version>
-		<jackson.version>2.13.3</jackson.version>
+		<jackson.version>2.15.2</jackson.version>
 		<gson.version>2.10.1</gson.version>
 		<modelmapper.version>3.1.1</modelmapper.version>
-		<graalvm.script-engine.version>22.3.1</graalvm.script-engine.version>
+		<graalvm.script-engine.version>23.0.1</graalvm.script-engine.version>
 
-		<h2.version>2.1.214</h2.version>
-		<mysql.driver.version>8.0.32</mysql.driver.version>
-		<postgresql.driver.version>42.5.4</postgresql.driver.version>
-		<oracle.driver.version>19.18.0.0</oracle.driver.version>
+		<h2.version>2.2.220</h2.version>
+		<mysql.driver.version>8.0.33</mysql.driver.version>
+		<postgresql.driver.version>42.6.0</postgresql.driver.version>
+		<oracle.driver.version>19.19.0.0</oracle.driver.version>
 
 		<hibernate.version>7.0.2.Final</hibernate.version>
 		<javax-el.version>3.0.0</javax-el.version>
 		<javax-annotations.version>1.3.2</javax-annotations.version>
 		<jetbrains.annotations.version>24.0.1</jetbrains.annotations.version>
 
-		<lombok.version>1.18.26</lombok.version>
-		<jgit.version>6.4.0.202211300538-r</jgit.version>
+		<lombok.version>1.18.28</lombok.version>
+		<jgit.version>6.6.0.202305301015-r</jgit.version>
 		<log4j.version>2.20.0</log4j.version>
 		<reflections.version>0.10.2</reflections.version>
 		<nv-i18n.version>1.29</nv-i18n.version>
 		<javac-warning-annotation.version>1.0.0</javac-warning-annotation.version>
-		<guava.version>31.1-jre</guava.version>
+		<guava.version>32.1.1-jre</guava.version>
 
 		<!-- Plugin versions -->
 		<plugin.pojo.version>1.1.1</plugin.pojo.version>
-		<plugin.maven-compiler.version>3.9.0</plugin.maven-compiler.version>
+		<plugin.maven-compiler.version>3.11.0</plugin.maven-compiler.version>
 		<plugin.maven-shade.version>3.2.2</plugin.maven-shade.version>
 		<plugin.maven-jar.version>3.2.2</plugin.maven-jar.version>
 		<plugin.maven-site.version>3.10.0</plugin.maven-site.version>
-		<plugin.maven-surefire.version>3.0.0-M5</plugin.maven-surefire.version>
-		<plugin.build-helper-maven-plugin.version>3.3.0</plugin.build-helper-maven-plugin.version>
-		<plugin.git-commit-id.version>5.0.0</plugin.git-commit-id.version>
-		<plugin.versions-maven-plugin.version>2.15.0</plugin.versions-maven-plugin.version>
+		<plugin.maven-surefire.version>3.1.2</plugin.maven-surefire.version>
+		<plugin.maven-javadoc.version>3.5.0</plugin.maven-javadoc.version>
+		<plugin.build-helper-maven-plugin.version>3.4.0</plugin.build-helper-maven-plugin.version>
+		<plugin.git-commit-id.version>6.0.0</plugin.git-commit-id.version>
+		<plugin.versions-maven-plugin.version>2.16.0</plugin.versions-maven-plugin.version>
+		<plugin.lombok.version>1.18.20.0</plugin.lombok.version>
 	</properties>
 
 	<dependencies>
@@ -349,7 +354,6 @@
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -418,6 +422,41 @@
 					<argLine>${jvm.options}</argLine>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+				<version>${plugin.lombok.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok</artifactId>
+						<version>${lombok.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+					<outputDirectory>${delombok.output-directory}</outputDirectory>
+					<addOutputDirectory>false</addOutputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>delombok</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${plugin.maven-javadoc.version}</version>
+				<configuration>
+					<sourcepath>${delombok.output-directory}</sourcepath>
+				</configuration>
+			</plugin>
+
 		</plugins>
 
 
@@ -477,6 +516,9 @@
 	<profiles>
 		<profile>
 			<id>git-info</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
 			<build>
 				<plugins>
 					<!-- Generates file with git information -->
@@ -508,6 +550,9 @@
 
 		<profile> <!-- Display available dependency updates based on the properties for them -->
 			<id>list-property-updates</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
 			<build>
 				<plugins>
 					<!-- List available dependency updates (properties) -->
@@ -530,6 +575,9 @@
 
 		<profile> <!-- Display available dependency updates based on the dependencies/plugins themselves -->
 			<id>list-all-updates</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
 			<build>
 				<plugins>
 					<!-- List available dependency updates (properties) -->

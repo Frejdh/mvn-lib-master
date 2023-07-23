@@ -1,3 +1,5 @@
+[![Current Build](https://github.com/Frejdh/mvn-lib-master/actions/workflows/current-build.yml/badge.svg?branch=master)](https://github.com/Frejdh/mvn-lib-master/actions/workflows/current-build.yml)
+
 # Master pom for my libraries
 [Search for my public github libraries here](https://github.com/search?q=Frejdh%2Fmvn-lib-).
 
@@ -22,7 +24,7 @@ or add these lines to your `pom.xml` file:
 </repositories>
 ```
 
-### Deployment to github
+### Deployment to github (outdated)
 A part of the parent pom is pre-defined properties that enables easy releases to your github repository. 
 An artifact (non-fat version) and a branch can be automatically created upon `mvn clean deploy`. However, in order to set this up, some 
 properties needs to be set along with a plugin, please add the following to your child pom:

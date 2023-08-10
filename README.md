@@ -13,7 +13,7 @@ or add these lines to your `pom.xml` file:
 <parent>
     <groupId>com.frejdh</groupId>
     <artifactId>master-pom</artifactId>
-    <version>2.1.2</version>
+    <version>2.3.0</version>
 </parent>
 
 <repositories> <!-- Required in order to resolve this package -->
@@ -23,6 +23,16 @@ or add these lines to your `pom.xml` file:
     </repository>
 </repositories>
 ```
+
+## Update dependencies
+There are some plugins that can be used in order to detect dependency updates.
+
+### Based on properties
+`mvn initialize -P list-property-updates`
+
+### Based on the dependencies/plugins found
+`mvn initialize -P list-all-updates`
+
 
 ### Deployment to github (outdated)
 A part of the parent pom is pre-defined properties that enables easy releases to your github repository. 
@@ -98,12 +108,3 @@ In order to deploy anything, a couple of requisites needs to be fullfilled (once
     <password>[REPLACE. Your personal access token or plain text password]</password>
 </server>
 ```
-
-## Update dependencies
-There are some plugins that can be used in order to detect dependency updates.
-
-### Based on properties
-`mvn initialize -P list-property-updates`
-
-### Based on the dependencies/plugins found
-`mvn initialize -P list-all-updates`

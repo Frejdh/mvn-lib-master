@@ -1,4 +1,4 @@
-name: Release in this repository
+name: Release in another repository
 
 env:
   EVENT_BRANCH_NAME: ${{ github.head_ref || github.ref_name || '' }}
@@ -6,11 +6,17 @@ env:
   DEFAULT_TAG_ENABLED: true
   DEFAULT_TAG_PATTERN: '^(?!.+(-SNAPSHOT)$).+$'
   DEFAULT_TAG_OVERRIDE: true
-  TARGET_RELEASE_BRANCH: releases
+  RELEASE_REPOSITORY: Frejdh/releases
 
 on:
-  repository_dispatch:
-    types: [ ci-successful ]
+  push:
+    branches:
+      - master
+      - main
+      - develop
+    paths-ignore:
+      - '**.md'
+      - '.github/workflows/**'
   workflow_dispatch:
     inputs:
       project-framework:
@@ -35,17 +41,21 @@ on:
       create-tag-enabled:
         description: Create a tag
         type: boolean
-        default: 'true'
+        default: ${{ env.DEFAULT_TAG_ENABLED }}
 
       create-tag-pattern:
         description: The pattern that should generate tags. JavaScript regex syntax
         required: false
-        default: '^(?!.+(-SNAPSHOT)$).+$'
+        default: ${{ env.DEFAULT_TAG_PATTERN }}
 
       create-tag-allow-override:
         description: Override existing tags
         type: boolean
-        default: 'true'
+        default: ${{ env.DEFAULT_TAG_OVERRIDE }}
+
+      release-branch-repository:
+        description: Target repository that shall contain the release
+        default: Frejdh/releases
 
 jobs:
   release:
@@ -54,11 +64,11 @@ jobs:
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.RELEASE_PAT_TOKEN || secrets.GITHUB_TOKEN }}
           project-framework: ${{ inputs.project-framework || env.DEFAULT_FRAMEWORK }}
           build-arguments: ${{ inputs.build-arguments }}
           commitish: ${{ inputs.commitish || env.EVENT_BRANCH_NAME }}
           create-tag-enabled: ${{ inputs.create-tag-enabled || env.DEFAULT_TAG_ENABLED }}
           create-tag-pattern: ${{ inputs.create-tag-pattern || env.DEFAULT_TAG_PATTERN }}
           create-tag-allow-override: ${{ inputs.create-tag-allow-override || env.DEFAULT_TAG_OVERRIDE }}
-          release-branch-name-maven: ${{ env.TARGET_RELEASE_BRANCH }}
+          release-branch-repository: ${{ inputs.release-branch-repository || env.RELEASE_REPOSITORY }}

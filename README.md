@@ -9,11 +9,11 @@ Go here https://github.com/Frejdh/mvn-lib-master/releases
 ## Adding this as your parent pom
 Either use this [pom.xml](https://github.com/Frejdh/mvn-lib-master/blob/master/inherited-pom-example.xml) file as a base, 
 or add these lines to your `pom.xml` file:
-```
+```xml
 <parent>
     <groupId>com.frejdh</groupId>
     <artifactId>master-pom</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1</version>
 </parent>
 
 <repositories> <!-- Required in order to resolve this package -->

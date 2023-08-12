@@ -38,14 +38,14 @@ There are some plugins that can be used in order to detect dependency updates.
 A part of the parent pom is pre-defined properties that enables easy releases to your github repository. 
 An artifact (non-fat version) and a branch can be automatically created upon `mvn clean deploy`. However, in order to set this up, some 
 properties needs to be set along with a plugin, please add the following to your child pom:
-```
+```xml
 <properties> 
     <github.repository.owner>github-owner-of-repository</github.repository.owner>
     <github.repository.name>example-repository-name</github.repository.name>
 <properties>
 ```
 Also add the following plugin (no adjustments required):
-```
+```xml
 <plugin> <!-- Optional. Push artifact and files to github upon mvn deploy -->
     <inherited>false</inherited>
     <groupId>com.github.github</groupId>
@@ -101,7 +101,7 @@ In order to deploy anything, a couple of requisites needs to be fullfilled (once
 2. [A personal access token](https://github.com/settings/tokens) with both repository and user permissions (optional but highly recommended).
 3. A name set on your [Github profile](https://github.com/settings/profile) (an error will occur otherwise).
 4. Added the following fields to your `.m2/settings.xml` file:
-```		
+```xml
 <server>
     <id>github</id>
     <username>[REPLACE. Your Github username]</username>

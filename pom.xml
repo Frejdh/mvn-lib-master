@@ -71,7 +71,7 @@
 		<javac-warning-annotation.version>1.0.0</javac-warning-annotation.version>
 
 		<lombok.version>1.18.28</lombok.version>
-		<jgit.version>6.6.0.202305301015-r</jgit.version>
+		<jgit.version>6.6.1.202309021850-r</jgit.version>
 		<log4j.version>2.20.0</log4j.version>
 		<reflections.version>0.10.2</reflections.version>
 		<nv-i18n.version>1.29</nv-i18n.version>

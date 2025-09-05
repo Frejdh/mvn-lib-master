@@ -24,16 +24,15 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
     steps:
       - name: Build and test code
-        uses: Frejdh/action-build-and-test@v1.1.0
+        uses: Frejdh/action-build-and-test@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           java-version: 21
-          cache-id: v1
           commitish: "${{ github.event.inputs.ref || env.DEFAULT_GIT_REF }}"
       - name: Dispatch build successful event
         if: github.ref_name == env.DEFAULT_GIT_REF
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: ci-successful

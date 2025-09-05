@@ -19,10 +19,9 @@ jobs:
         os: [ ubuntu-latest ]
     steps:
       - name: Build and test code for branch '${{ github.event.pull_request.head.ref || github.event.inputs.ref || env.DEFAULT_GIT_REF }}'
-        uses: Frejdh/action-build-and-test@v1.1.0
+        uses: Frejdh/action-build-and-test@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           java-version: 21
-          cache-id: v1
           commitish: "${{ github.event.pull_request.head.ref || github.event.inputs.ref || env.DEFAULT_GIT_REF }}"

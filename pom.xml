@@ -7,14 +7,14 @@
 
 	<groupId>com.frejdh</groupId>
 	<artifactId>master-pom</artifactId>
-	<version>2.3.1</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
 		<!-- Java/Kotlin configurations -->
-		<java.version>17</java.version> <!-- Fetched during runtime -->
-		<java.project.version>17</java.project.version> <!-- Use to manually configure java version for compiling -->
-		<kotlin.version>1.5.10</kotlin.version>
+		<java.version>21</java.version> <!-- Fetched during runtime -->
+		<java.project.version>${java.version}</java.project.version> <!-- Use to manually configure java version for compiling -->
+		<kotlin.version>2.2.10</kotlin.version>
 		<jvm.options></jvm.options>
 
 		<!-- Maven configurations -->
@@ -26,69 +26,57 @@
 		<!-- Lombok configurations for javadoc -->
 		<delombok.output-directory>target/delombok</delombok.output-directory>
 
-		<!-- Artifact deployment -->
-		<internal.deploy.repository>internal.repo</internal.deploy.repository>
-		<github.ref.release.jar>refs/tags</github.ref.release.jar>
-		<github.ref.release.branch>refs/heads</github.ref.release.branch>
-		<github.global.server>github</github.global.server> <!-- Server defined in settings.xml -->
-		<github.deploy.branch>releases</github.deploy.branch>
-		<github.repository.owner></github.repository.owner> <!-- Frejdh - Should be empty by default, only change when pushing artifacts -->
-		<github.repository.name></github.repository.name> <!-- mvn-lib-master - Should be empty by default, only change when pushing artifacts -->
-		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
-
 		<!-- Dependency versions -->
-		<vertx.version>4.4.4</vertx.version>
-		<spring-boot.version>3.1.2</spring-boot.version>
-		<frejdh.dependencies.version>1.2.1</frejdh.dependencies.version>
+		<vertx.version>5.0.3</vertx.version>
+		<spring-boot.version>3.5.4</spring-boot.version>
 
-		<junit-base.version>5.9.2</junit-base.version>
-		<junit-platforms.version>1.9.2</junit-platforms.version>
+		<junit-base.version>5.13.4</junit-base.version>
+		<junit-platforms.version>5.13.4</junit-platforms.version>
 		<mockito-core.version>5.2.0</mockito-core.version>
-		<mockito-all.version>mockito-all </mockito-all.version>
 		<junit-engine.version>${junit-base.version}</junit-engine.version>
 		<powermock.version>2.0.9</powermock.version>
 
-		<apache.commons-lang.version>3.12.0</apache.commons-lang.version>
-		<apache.commons-io.version>2.13.0</apache.commons-io.version>
-		<apache.commons-codec.version>1.16.0</apache.commons-codec.version>
-		<apache.commons-validator.version>1.7</apache.commons-validator.version>
+		<apache.commons-lang.version>3.18.0</apache.commons-lang.version>
+		<apache.commons-io.version>2.20.0</apache.commons-io.version>
+		<apache.commons-codec.version>1.19.0</apache.commons-codec.version>
+		<apache.commons-validator.version>1.10.0</apache.commons-validator.version>
 		<apache.http-client.version>4.5.14</apache.http-client.version>
-		<jackson.version>2.15.2</jackson.version>
-		<gson.version>2.10.1</gson.version>
-		<modelmapper.version>3.1.1</modelmapper.version>
-		<graalvm.script-engine.version>23.0.1</graalvm.script-engine.version>
+		<jackson.version>2.20.0</jackson.version>
+		<gson.version>2.13.1</gson.version>
+		<modelmapper.version>3.2.4</modelmapper.version>
+		<graalvm.script-engine.version>24.2.2</graalvm.script-engine.version>
 
-		<h2.version>2.2.220</h2.version>
+		<h2.version>2.3.232</h2.version>
 		<mysql.driver.version>8.0.33</mysql.driver.version>
-		<postgresql.driver.version>42.6.0</postgresql.driver.version>
-		<oracle.driver.version>19.19.0.0</oracle.driver.version>
+		<postgresql.driver.version>42.7.7</postgresql.driver.version>
+		<oracle.driver.version>19.28.0.0</oracle.driver.version>
 
-		<hibernate.version>7.0.2.Final</hibernate.version>
-		<javax-el.version>3.0.0</javax-el.version>
-		<javax-annotations.version>1.3.2</javax-annotations.version>
-		<jetbrains.annotations.version>24.0.1</jetbrains.annotations.version>
+		<hibernate.version>9.0.1.Final</hibernate.version>
+		<javax-el.version>3.0.0</javax-el.version> <!-- Deprecated -->
+		<jakarta.el.version>6.0.1</jakarta.el.version>
+		<jetbrains.annotations.version>26.0.2</jetbrains.annotations.version>
 		<apiguardian.version>1.1.2</apiguardian.version>
 		<javac-warning-annotation.version>1.0.0</javac-warning-annotation.version>
 
-		<lombok.version>1.18.28</lombok.version>
-		<jgit.version>6.6.0.202305301015-r</jgit.version>
-		<log4j.version>2.20.0</log4j.version>
+		<lombok.version>1.18.38</lombok.version>
+		<jgit.version>7.3.0.202506031305-r</jgit.version>
+		<log4j.version>2.25.1</log4j.version>
 		<reflections.version>0.10.2</reflections.version>
 		<nv-i18n.version>1.29</nv-i18n.version>
-		<guava.version>32.1.1-jre</guava.version>
+		<guava.version>33.4.8-jre</guava.version>
 		<jcolor.version>5.5.1</jcolor.version>
 
 		<!-- Plugin versions -->
 		<plugin.pojo.version>1.1.1</plugin.pojo.version>
-		<plugin.maven-compiler.version>3.11.0</plugin.maven-compiler.version>
+		<plugin.maven-compiler.version>3.14.0</plugin.maven-compiler.version>
 		<plugin.maven-shade.version>3.2.2</plugin.maven-shade.version>
 		<plugin.maven-jar.version>3.2.2</plugin.maven-jar.version>
-		<plugin.maven-site.version>3.10.0</plugin.maven-site.version>
-		<plugin.maven-surefire.version>3.1.2</plugin.maven-surefire.version>
-		<plugin.maven-javadoc.version>3.5.0</plugin.maven-javadoc.version>
-		<plugin.build-helper-maven-plugin.version>3.4.0</plugin.build-helper-maven-plugin.version>
-		<plugin.git-commit-id.version>6.0.0</plugin.git-commit-id.version>
-		<plugin.versions-maven-plugin.version>2.16.0</plugin.versions-maven-plugin.version>
+		<plugin.maven-site.version>3.21.0</plugin.maven-site.version>
+		<plugin.maven-surefire.version>3.5.3</plugin.maven-surefire.version>
+		<plugin.maven-javadoc.version>3.11.3</plugin.maven-javadoc.version>
+		<plugin.build-helper-maven-plugin.version>3.6.1</plugin.build-helper-maven-plugin.version>
+		<plugin.git-commit-id.version>9.0.2</plugin.git-commit-id.version>
+		<plugin.versions-maven-plugin.version>2.18.0</plugin.versions-maven-plugin.version>
 		<plugin.lombok.version>1.18.20.0</plugin.lombok.version>
 	</properties>
 
@@ -167,11 +155,6 @@
 				<version>${mockito-core.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>${mockito-all.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-api-mockito2</artifactId>
 				<version>${powermock.version}</version>
@@ -223,6 +206,11 @@
 			<dependency> <!-- YAML parsing -->
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-yaml</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency> <!-- XML parsing -->
+				<groupId>com.fasterxml.jackson.module</groupId>
+				<artifactId>jackson-module-parameter-names</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
@@ -289,6 +277,11 @@
 				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency> <!-- Required by hibernator (needs to be manually provided) -->
+				<groupId>jakarta.el</groupId>
+				<artifactId>jakarta.el-api</artifactId>
+				<version>${jakarta.el.version}</version>
+			</dependency>
+			<dependency> <!-- DEPRECATED. Required by hibernator (needs to be manually provided) -->
 				<groupId>javax.el</groupId>
 				<artifactId>javax.el-api</artifactId>
 				<version>${javax-el.version}</version>
@@ -482,55 +475,7 @@
 
 
 		<pluginManagement>
-			<plugins>
-				<plugin> <!-- Push artifact and files to github. Optional usage -->
-					<groupId>com.github.github</groupId>
-					<artifactId>site-maven-plugin</artifactId>
-					<version>${github.site-maven-plugin.version}</version>
-					<inherited>false</inherited>
-
-					<executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-						<execution> <!-- Package and push .jar file as a release, available for direct download on github -->
-							<id>github-site-to-artifact</id>
-							<goals>
-								<goal>site</goal>
-							</goals>
-							<phase>deploy</phase>
-							<configuration>
-								<message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
-								<noJekyll>true</noJekyll><!-- Disable webpage processing -->
-								<outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
-								<branch>${github.ref.release.jar}/${project.version}
-								</branch> <!-- Remote branch name (maven repository) -->
-								<includes>
-									<include>**/*</include>
-								</includes>
-								<repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
-								<repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
-							</configuration>
-						</execution>
-
-						<execution> <!-- Upload files to a specific branch used as a maven repository -->
-							<id>github-site-to-branch</id>
-							<goals>
-								<goal>site</goal>
-							</goals>
-							<phase>deploy</phase>
-							<configuration>
-								<message>Maven artifact for ${project.version}</message> <!-- Git commit message -->
-								<noJekyll>true</noJekyll><!-- Disable webpage processing -->
-								<outputDirectory>${project.build.directory}/${github.deploy.branch}</outputDirectory> <!-- Matches distribution management repository url above -->
-								<branch>${github.ref.release.branch}/${github.deploy.branch}</branch> <!-- Remote branch name (maven repository) -->
-								<includes>
-									<include>**/*</include>
-								</includes>
-								<repositoryOwner>${github.repository.owner}</repositoryOwner> <!-- Organization or username  -->
-								<repositoryName>${github.repository.name}</repositoryName> <!-- Github repo name -->
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
+			<plugins></plugins>
 		</pluginManagement>
 	</build>
 
@@ -594,6 +539,31 @@
 			</build>
 		</profile>
 
+		<profile> <!-- Display available dependency updates based on the properties for them -->
+			<id>update-properties</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<!-- List available dependency updates (properties) -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>${plugin.versions-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>update-properties</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 		<profile> <!-- Display available dependency updates based on the dependencies/plugins themselves -->
 			<id>list-all-updates</id>
 			<activation>
@@ -627,13 +597,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<distributionManagement>
-		<repository>
-			<id>${internal.deploy.repository}</id>
-			<name>Temporary Maven Staging Repository</name>
-			<url>file://${project.build.directory}/${github.deploy.branch}</url>
-		</repository>
-	</distributionManagement>
 
 </project>

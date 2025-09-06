@@ -2,6 +2,7 @@ name: Release in another repository
 
 env:
   EVENT_BRANCH_NAME: ${{ github.head_ref || github.ref_name || '' }}
+  DEFAULT_ENV: release
   DEFAULT_FRAMEWORK: Maven
   DEFAULT_TAG_ENABLED: true
   DEFAULT_TAG_PATTERN: '^(?!.+(-SNAPSHOT)$).+$'
@@ -65,7 +66,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment || env.DEFAULT_ENV }}
     steps:
       - name: Verify environment
         run: |

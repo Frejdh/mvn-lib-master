@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Release environment"
+        description: "Job environment"
         default: 'release'
         required: true
         type: environment
@@ -46,7 +46,7 @@ on:
       create-tag-enabled:
         description: Create a tag
         type: boolean
-        default: 'true'
+        default: true
 
       create-tag-pattern:
         description: The pattern that should generate tags. JavaScript regex syntax
@@ -56,7 +56,7 @@ on:
       create-tag-allow-override:
         description: Override existing tags
         type: boolean
-        default: 'true'
+        default: true
 
       release-branch-repository:
         description: Target repository that shall contain the release
@@ -71,7 +71,7 @@ jobs:
         run: |
           echo "This job will use the environment: ${{ job.environment.name }}"
       - name: Release artifacts
-        uses: Frejdh/action-release-to-branch@debug
+        uses: Frejdh/action-release-to-branch@master
         with:
           github-token: ${{ secrets.RELEASE_PAT_TOKEN }}
           project-framework: ${{ inputs.project-framework || env.DEFAULT_FRAMEWORK }}

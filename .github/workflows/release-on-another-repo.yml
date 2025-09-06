@@ -60,6 +60,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@debug

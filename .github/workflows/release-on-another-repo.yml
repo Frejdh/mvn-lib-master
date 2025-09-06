@@ -68,9 +68,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment || env.DEFAULT_ENV }}
     steps:
-      - name: Verify environment
-        run: |
-          echo "This job will use the environment: ${{ job.environment.name }}"
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@master
         with:

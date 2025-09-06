@@ -64,7 +64,7 @@ jobs:
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@debug
         with:
-          github-token: ${{ secrets.RELEASE_PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.RELEASE_PAT_TOKEN }}
           project-framework: ${{ inputs.project-framework || env.DEFAULT_FRAMEWORK }}
           build-arguments: ${{ inputs.build-arguments }}
           commitish: ${{ inputs.commitish || env.EVENT_BRANCH_NAME }}

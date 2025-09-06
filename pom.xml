@@ -47,12 +47,11 @@
 		<graalvm.script-engine.version>24.2.2</graalvm.script-engine.version>
 
 		<h2.version>2.3.232</h2.version>
-		<mysql.driver.version>8.0.33</mysql.driver.version>
+		<mysql.driver.version>9.4.0</mysql.driver.version>
 		<postgresql.driver.version>42.7.7</postgresql.driver.version>
 		<oracle.driver.version>19.28.0.0</oracle.driver.version>
 
 		<hibernate.version>9.0.1.Final</hibernate.version>
-		<javax-el.version>3.0.0</javax-el.version> <!-- Deprecated -->
 		<jakarta.el.version>6.0.1</jakarta.el.version>
 		<jetbrains.annotations.version>26.0.2</jetbrains.annotations.version>
 		<apiguardian.version>1.1.2</apiguardian.version>
@@ -244,7 +243,7 @@
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
+				<artifactId>mysql-connector-j</artifactId>
 				<version>${mysql.driver.version}</version>
 			</dependency>
 			<dependency>
@@ -280,16 +279,6 @@
 				<groupId>jakarta.el</groupId>
 				<artifactId>jakarta.el-api</artifactId>
 				<version>${jakarta.el.version}</version>
-			</dependency>
-			<dependency> <!-- DEPRECATED. Required by hibernator (needs to be manually provided) -->
-				<groupId>javax.el</groupId>
-				<artifactId>javax.el-api</artifactId>
-				<version>${javax-el.version}</version>
-			</dependency>
-			<dependency> <!-- Required by hibernator (needs to be manually provided) -->
-				<groupId>org.glassfish</groupId>
-				<artifactId>javax.el</artifactId>
-				<version>${javax-el.version}</version>
 			</dependency>
 
 			<dependency>

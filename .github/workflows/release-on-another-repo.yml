@@ -19,6 +19,11 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
     inputs:
+      environment:
+        description: "Release environment"
+        default: 'release'
+        required: true
+        type: environment
       project-framework:
         description: Project framework
         type: choice
@@ -60,8 +65,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment: release
+    environment: ${{ inputs.environment }}
     steps:
+      - name: Verify environment
+        run: |
+          echo "This job will use the environment: ${{ job.environment.name }}"
       - name: Release artifacts
         uses: Frejdh/action-release-to-branch@debug
         with:

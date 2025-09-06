@@ -528,14 +528,13 @@
 			</build>
 		</profile>
 
-		<profile> <!-- Display available dependency updates based on the properties for them -->
+		<profile> <!-- Updates dependencies based on the property versions for them -->
 			<id>update-properties</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
-					<!-- List available dependency updates (properties) -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>versions-maven-plugin</artifactId>

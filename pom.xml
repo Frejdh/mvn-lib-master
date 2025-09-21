@@ -69,6 +69,7 @@
 		<lombok.version>1.18.40</lombok.version>
 		<jgit.version>7.3.0.202506031305-r</jgit.version>
 		<log4j.version>2.25.1</log4j.version>
+		<slf4j.version>2.0.17</slf4j.version>
 		<reflections.version>0.10.2</reflections.version>
 		<nv-i18n.version>1.29</nv-i18n.version>
 		<guava.version>33.4.8-jre</guava.version>
@@ -328,6 +329,32 @@
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-to-slf4j</artifactId>
 				<version>${log4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-bom</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-jdk14</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 
 			<!-- Misc -->

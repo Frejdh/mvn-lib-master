@@ -27,6 +27,7 @@
 		<!-- Maven configurations -->
 		<maven.compiler.source>${java.project.version}</maven.compiler.source>
 		<maven.compiler.target>${java.project.version}</maven.compiler.target>
+		<maven.compiler.release>${java.project.version}</maven.compiler.release>
 		<generatedSources>${project.build.directory}/generated-sources</generatedSources>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -330,6 +331,11 @@
 				<artifactId>log4j-to-slf4j</artifactId>
 				<version>${log4j.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core-test</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -474,6 +480,15 @@
 					<encoding>UTF-8</encoding>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
+
+					<!-- Lombok annotation processor. Ignored by projects that doesn't use lombok -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 

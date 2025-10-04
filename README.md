@@ -6,7 +6,9 @@
 ## Releases
 Go here https://github.com/Frejdh/mvn-lib-master/releases
 
-## Adding this as your parent pom
+## Adding the dependency
+
+### Maven
 Either use this [pom.xml](https://github.com/Frejdh/mvn-lib-master/blob/master/inherited-pom-example.xml) file as a base, 
 or add these lines to your `pom.xml` file:
 ```xml
@@ -23,6 +25,19 @@ or add these lines to your `pom.xml` file:
     </repository>
 </repositories>
 ```
+
+### Gradle
+```kotlin
+// settings.gradle.kts
+repositories {
+    maven {
+        url = uri("https://raw.githubusercontent.com/Frejdh/releases/maven")
+    }
+}
+
+// 
+```
+
 
 ## Update dependencies
 There are some plugins that can be used in order to detect dependency updates.
